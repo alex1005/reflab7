@@ -100,11 +100,14 @@ public class Customer {
     }
 
     private void updateBalance(double sum, double totalOverdraft) {
-        // we are in overdraft
-        if (account.getMoney() < 0) {
+        if (isInOverdraft()) {
             account.setMoney((account.getMoney() - sum) - sum * totalOverdraft);
         } else {
             account.setMoney(account.getMoney() - sum);
         }
+    }
+
+    private boolean isInOverdraft() {
+        return account.getMoney() < 0;
     }
 }
