@@ -31,41 +31,22 @@ public class Customer {
         if (account.getType().isPremium()) {
             switch (customerType) {
                 case COMPANY:
-                    // we are in overdraft
-                    if (account.getMoney() < 0) {
-                        // 50 percent discount for overdraft for premium account
-                        account.setMoney((account.getMoney() - sum) - sum * account.overdraftFee() * companyOverdraftDiscount / 2);
-                    } else {
-                        account.setMoney(account.getMoney() - sum);
-                    }
+                    // 50 percent discount for overdraft for premium account
+                    updateBalance(sum, account.overdraftFee() * companyOverdraftDiscount / 2);
                     break;
                 case PERSON:
                     // we are in overdraft
-                    if (account.getMoney() < 0) {
-                        account.setMoney((account.getMoney() - sum) - sum * account.overdraftFee());
-                    } else {
-                        account.setMoney(account.getMoney() - sum);
-                    }
+                    updateBalance(sum, account.overdraftFee());
                     break;
             }
         } else {
             switch (customerType) {
                 case COMPANY:
-                    // we are in overdraft
-                    if (account.getMoney() < 0) {
-                        // no discount for overdraft for not premium account
-                        account.setMoney((account.getMoney() - sum) - sum * account.overdraftFee() * companyOverdraftDiscount);
-                    } else {
-                        account.setMoney(account.getMoney() - sum);
-                    }
+                    // no discount for overdraft for not premium account
+                    updateBalance(sum, account.overdraftFee() * companyOverdraftDiscount);
                     break;
                 case PERSON:
-                    // we are in overdraft
-                    if (account.getMoney() < 0) {
-                        account.setMoney((account.getMoney() - sum) - sum * account.overdraftFee());
-                    } else {
-                        account.setMoney(account.getMoney() - sum);
-                    }
+                    updateBalance(sum, account.overdraftFee());
                     break;
             }
         }
@@ -116,5 +97,14 @@ public class Customer {
 
     private String getFullName() {
         return name + " " + surname + " ";
+    }
+
+    private void updateBalance(double sum, double totalOverdraft) {
+        // we are in overdraft
+        if (account.getMoney() < 0) {
+            account.setMoney((account.getMoney() - sum) - sum * totalOverdraft);
+        } else {
+            account.setMoney(account.getMoney() - sum);
+        }
     }
 }
