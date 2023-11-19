@@ -10,7 +10,7 @@ public class CustomerTest {
         Account account = getAccountByTypeAndMoney(false, 34.0);
         Customer customer = getPersonCustomer(account);
         customer.withdraw(10, "EUR");
-        assertThat(account.getMoney(), is(24.0));
+        assertThat(account.getMoneyBalance().getMoney(), is(24.0));
     }
 
     @Test
@@ -18,7 +18,7 @@ public class CustomerTest {
         Account account = getAccountByTypeAndMoney(false, -10.0);
         Customer customer = getPersonCustomer(account);
         customer.withdraw(10, "EUR");
-        assertThat(account.getMoney(), is(-22.0));
+        assertThat(account.getMoneyBalance().getMoney(), is(-22.0));
     }
 
     @Test
@@ -26,7 +26,7 @@ public class CustomerTest {
         Account account = getAccountByTypeAndMoney(true, 34.0);
         Customer customer = getPersonCustomer(account);
         customer.withdraw(10, "EUR");
-        assertThat(account.getMoney(), is(24.0));
+        assertThat(account.getMoneyBalance().getMoney(), is(24.0));
     }
 
     @Test
@@ -34,7 +34,7 @@ public class CustomerTest {
         Account account = getAccountByTypeAndMoney(true, -10.0);
         Customer customer = getPersonCustomer(account);
         customer.withdraw(10, "EUR");
-        assertThat(account.getMoney(), is(-21.0));
+        assertThat(account.getMoneyBalance().getMoney(), is(-21.0));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class CustomerTest {
         Account account = getAccountByTypeAndMoney(false, 34);
         Customer customer = getCompanyCustomer(account);
         customer.withdraw(10, "EUR");
-        assertThat(account.getMoney(), is(24.0));
+        assertThat(account.getMoneyBalance().getMoney(), is(24.0));
     }
 
     @Test
@@ -50,7 +50,7 @@ public class CustomerTest {
         Account account = getAccountByTypeAndMoney(false, -10);
         Customer customer = getCompanyCustomer(account);
         customer.withdraw(10, "EUR");
-        assertThat(account.getMoney(), is(-21.0));
+        assertThat(account.getMoneyBalance().getMoney(), is(-21.0));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class CustomerTest {
         Account account = getAccountByTypeAndMoney(true, 34);
         Customer customer = getCompanyCustomer(account);
         customer.withdraw(10, "EUR");
-        assertThat(account.getMoney(), is(24.0));
+        assertThat(account.getMoneyBalance().getMoney(), is(24.0));
     }
 
     @Test
@@ -66,7 +66,7 @@ public class CustomerTest {
         Account account = getAccountByTypeAndMoney(true, -10);
         Customer customer = getCompanyCustomer(account);
         customer.withdraw(10, "EUR");
-        assertThat(account.getMoney(), is(-20.25));
+        assertThat(account.getMoneyBalance().getMoney(), is(-20.25));
     }
 
     @Test
@@ -108,26 +108,26 @@ public class CustomerTest {
     private Customer getPersonWithAccount(boolean premium) {
         Account account = new Account(premium, 9);
         Customer customer = getPersonCustomer(account);
+        MoneyBalance balance = new MoneyBalance(34.0, "EUR");
         account.setIban("RO023INGB434321431241");
-        account.setMoney(34.0);
-        account.setCurrency("EUR");
+        account.setMoneyBalance(balance);
         return customer;
     }
 
     private Customer getCompanyWithAccount(boolean premium) {
         Account account = new Account(premium, 9);
         Customer customer = getCompanyCustomer(account);
+        MoneyBalance balance = new MoneyBalance(34.0, "EUR");
         account.setIban("RO023INGB434321431241");
-        account.setMoney(34.0);
-        account.setCurrency("EUR");
+        account.setMoneyBalance(balance);
         return customer;
     }
 
     private Account getAccountByTypeAndMoney(boolean premium, double money) {
         Account account = new Account(premium, 9);
+        MoneyBalance balance = new MoneyBalance(money, "EUR");
         account.setIban("RO023INGB434321431241");
-        account.setMoney(money);
-        account.setCurrency("EUR");
+        account.setMoneyBalance(balance);
         return account;
     }
 

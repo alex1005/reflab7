@@ -36,17 +36,17 @@ public abstract class Customer {
     public String printCustomerMoney() {
         String fullName = getFullName();
         String accountDescription = "";
-        accountDescription += "Account: IBAN: " + account.getIban() + ", Money: " + account.getMoney();
+        accountDescription += "Account: IBAN: " + account.getIban() + ", Money: " + account.getMoneyBalance().getMoney();
         return fullName + " " + accountDescription;
     }
 
     public String printCustomerAccount() {
         return "Account: IBAN: " + account.getIban() + ", Money: "
-                + account.getMoney() + ", Account type: " + account.getPrintableAccountType();
+                + account.getMoneyBalance().getMoney() + ", Account type: " + account.getPrintableAccountType();
     }
 
     public void withdraw(double sum, String currency) {
-        if (!account.getCurrency().equals(currency)) {
+        if (!account.getMoneyBalance().getCurrency().equals(currency)) {
             throw new RuntimeException("Can't extract withdraw " + currency);
         }
     }
@@ -54,13 +54,13 @@ public abstract class Customer {
 
     final protected void withdrawWithOverdraft(double sum, double totalOverdraft) {
         if (isInOverdraft()) {
-            account.setMoney((account.getMoney() - sum) - sum * totalOverdraft);
+            account.updateBalance((account.getMoneyBalance().getMoney() - sum) - sum * totalOverdraft);
         } else {
-            account.setMoney(account.getMoney() - sum);
+            account.updateBalance(account.getMoneyBalance().getMoney() - sum);
         }
     }
 
     private boolean isInOverdraft() {
-        return account.getMoney() < 0;
+        return account.getMoneyBalance().getMoney() < 0;
     }
 }

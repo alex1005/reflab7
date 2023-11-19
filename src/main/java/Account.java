@@ -6,9 +6,7 @@ public class Account {
 
     private int daysOverdrawn;
 
-    private double money;
-
-    private String currency;
+    private MoneyBalance moneyBalance;
 
     private Customer customer;
 
@@ -64,12 +62,16 @@ public class Account {
         this.iban = iban;
     }
 
-    public void setMoney(double money) {
-        this.money = money;
+    public void updateBalance(double money) {
+        moneyBalance.setMoney(money);
     }
 
-    public double getMoney() {
-        return money;
+    public MoneyBalance getMoneyBalance() {
+        return moneyBalance;
+    }
+
+    public void setMoneyBalance(MoneyBalance moneyBalance) {
+        this.moneyBalance = moneyBalance;
     }
 
     public Customer getCustomer() {
@@ -82,13 +84,5 @@ public class Account {
 
     public String printCustomer() {
         return customer.getName() + " " + customer.getEmail();
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 }
