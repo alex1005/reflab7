@@ -42,7 +42,7 @@ public abstract class Customer {
 
     public String printCustomerAccount() {
         return "Account: IBAN: " + account.getIban() + ", Money: "
-                + account.getMoney() + ", Account type: " + account.getType();
+                + account.getMoney() + ", Account type: " + account.getPrintableAccountType();
     }
 
     public void withdraw(double sum, String currency) {
