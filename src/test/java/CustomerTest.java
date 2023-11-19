@@ -70,13 +70,13 @@ public class CustomerTest {
     }
 
     @Test
-    public void testPrintCustomerDaysOverdrawn() throws Exception {
+    public void testPrintPersonCustomerDaysOverdrawn() throws Exception {
         Customer customer = getPersonWithAccount(false);
         assertThat(customer.printCustomerDaysOverdrawn(), is("danix dan Account: IBAN: RO023INGB434321431241, Days Overdrawn: 9"));
     }
 
     @Test
-    public void testPrintCustomerMoney() throws Exception {
+    public void testPrintPersonCustomerMoney() throws Exception {
         Customer customer = getPersonWithAccount(false);
         assertThat(customer.printCustomerMoney(), is("danix dan Account: IBAN: RO023INGB434321431241, Money: 34.0"));
     }
@@ -93,10 +93,32 @@ public class CustomerTest {
         assertThat(customer.printCustomerAccount(), is("Account: IBAN: RO023INGB434321431241, Money: 34.0, Account type: premium"));
     }
 
+    @Test
+    public void testPrintCompanyCustomerDaysOverdrawn() throws Exception {
+        Customer customer = getCompanyWithAccount(false);
+        assertThat(customer.printCustomerDaysOverdrawn(), is("company Account: IBAN: RO023INGB434321431241, Days Overdrawn: 9"));
+    }
+
+    @Test
+    public void testPrintCompanyCustomerMoney() throws Exception {
+        Customer customer = getCompanyWithAccount(false);
+        assertThat(customer.printCustomerMoney(), is("company Account: IBAN: RO023INGB434321431241, Money: 34.0"));
+    }
+
     private Customer getPersonWithAccount(boolean premium) {
         AccountType accountType = new AccountType(premium);
         Account account = new Account(accountType, 9);
         Customer customer = getPersonCustomer(account);
+        account.setIban("RO023INGB434321431241");
+        account.setMoney(34.0);
+        account.setCurrency("EUR");
+        return customer;
+    }
+
+    private Customer getCompanyWithAccount(boolean premium) {
+        AccountType accountType = new AccountType(premium);
+        Account account = new Account(accountType, 9);
+        Customer customer = getCompanyCustomer(account);
         account.setIban("RO023INGB434321431241");
         account.setMoney(34.0);
         account.setCurrency("EUR");
@@ -113,13 +135,13 @@ public class CustomerTest {
     }
 
     private Customer getPersonCustomer(Account account) {
-        Customer customer = new Customer("danix", "dan", "dan@mail.com", CustomerType.PERSON, account);
+        Customer customer = new Person("danix", "dan", "dan@mail.com", account);
         account.setCustomer(customer);
         return customer;
     }
 
     private Customer getCompanyCustomer(Account account) {
-        Customer customer = new Customer("company", "company@mail.com", account, 0.50);
+        Customer customer = new Company("company", "company@mail.com", account, 0.50);
         account.setCustomer(customer);
         return customer;
     }
