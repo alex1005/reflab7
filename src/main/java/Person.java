@@ -7,8 +7,7 @@ public class Person extends Customer {
 
     @Override
     public void withdraw(double sum, String currency) {
-        super.withdraw(sum, currency);
-        withdrawWithOverdraft(sum, account.overdraftFee());
+        account.withdrawFromAccountBalance(sum, currency, 1);
     }
 
     @Override

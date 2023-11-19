@@ -28,39 +28,25 @@ public abstract class Customer {
 
     public String printCustomerDaysOverdrawn() {
         String fullName = getFullName();
-
-        String accountDescription = "Account: IBAN: " + account.getIban() + ", Days Overdrawn: " + account.getDaysOverdrawn();
+        String accountDescription = account.getAccountDescriptionWithDaysOverdrawn();
         return fullName + " " + accountDescription;
     }
 
     public String printCustomerMoney() {
         String fullName = getFullName();
-        String accountDescription = "";
-        accountDescription += "Account: IBAN: " + account.getIban() + ", Money: " + account.getMoneyBalance().getMoney();
+        String accountDescription = account.getAccountDescriptionWithMoney();
         return fullName + " " + accountDescription;
     }
 
     public String printCustomerAccount() {
-        return "Account: IBAN: " + account.getIban() + ", Money: "
-                + account.getMoneyBalance().getMoney() + ", Account type: " + account.getPrintableAccountType();
+        return account.toString();
     }
 
-    public void withdraw(double sum, String currency) {
-        if (!account.getMoneyBalance().getCurrency().equals(currency)) {
-            throw new RuntimeException("Can't extract withdraw " + currency);
-        }
+    @Override
+    public String toString() {
+        return getName() + " " + getEmail();
     }
+
+    public abstract void withdraw(double sum, String currency);
     protected abstract String getFullName();
-
-    final protected void withdrawWithOverdraft(double sum, double totalOverdraft) {
-        if (isInOverdraft()) {
-            account.updateBalance((account.getMoneyBalance().getMoney() - sum) - sum * totalOverdraft);
-        } else {
-            account.updateBalance(account.getMoneyBalance().getMoney() - sum);
-        }
-    }
-
-    private boolean isInOverdraft() {
-        return account.getMoneyBalance().getMoney() < 0;
-    }
 }

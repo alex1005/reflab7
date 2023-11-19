@@ -42,6 +42,21 @@ public class Account {
         }
     }
 
+    public void withdrawFromAccountBalance(double sum, String currency, double overdraftCoefficient) {
+        if (!moneyBalance.getCurrency().equals(currency)) {
+            throw new RuntimeException("Can't extract withdraw " + currency);
+        }
+        if (isInOverdraft()) {
+            updateBalance((moneyBalance.getMoney() - sum) - sum * overdraftFee() * overdraftCoefficient);
+        } else {
+            updateBalance(moneyBalance.getMoney() - sum);
+        }
+    }
+
+    public boolean isInOverdraft() {
+        return moneyBalance.getMoney() < 0;
+    }
+
     public boolean isPremium() {
         return isPremium;
     }
@@ -82,7 +97,17 @@ public class Account {
         this.customer = customer;
     }
 
-    public String printCustomer() {
-        return customer.getName() + " " + customer.getEmail();
+    public String getAccountDescriptionWithDaysOverdrawn() {
+        return "Account: IBAN: " + getIban() + ", Days Overdrawn: " + getDaysOverdrawn();
+    }
+
+    public String getAccountDescriptionWithMoney() {
+        return "Account: IBAN: " + getIban() + ", Money: " + getMoneyBalance().getMoney();
+    }
+
+    @Override
+    public String toString() {
+        return "Account: IBAN: " + getIban() + ", Money: "
+                + getMoneyBalance().getMoney() + ", Account type: " + getPrintableAccountType();
     }
 }

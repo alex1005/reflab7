@@ -34,7 +34,7 @@ public class AccountTest {
         Account account = getNormalAccount();
         Customer customer = new Person("xxx", "xxx", "xxx@mail.com", account);
         account.setCustomer(customer);
-        assertThat(account.printCustomer(), is("xxx xxx@mail.com"));
+        assertThat(account.getCustomer().toString(), is("xxx xxx@mail.com"));
     }
 
     private Account getNormalAccount() {

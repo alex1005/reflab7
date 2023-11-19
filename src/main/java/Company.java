@@ -14,9 +14,8 @@ public class Company extends Customer {
 
     @Override
     public void withdraw(double sum, String currency) {
-        super.withdraw(sum, currency);
         int discountDivider = account.isPremium() ? ADDITIONAL_DISCOUNT_DIVIDER : BASE_DISCOUNT_DIVIDER;
-        withdrawWithOverdraft(sum, account.overdraftFee() * companyOverdraftDiscount / discountDivider);
+        account.withdrawFromAccountBalance(sum, currency,  companyOverdraftDiscount / discountDivider);
     }
 
     @Override
